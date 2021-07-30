@@ -1,0 +1,22 @@
+PATH
+  remote: ..
+  specs:
+    minitest-suite (0.1.0)
+      minitest
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.14.4)
+    rake (13.0.6)
+
+PLATFORMS
+  arm64-darwin-20
+
+DEPENDENCIES
+  minitest
+  minitest-suite!
+  rake
+
+BUNDLED WITH
+   2.2.15

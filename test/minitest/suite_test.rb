@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "test_helper"
 
 class Minitest::SuiteTest < Minitest::Test
@@ -7,7 +5,23 @@ class Minitest::SuiteTest < Minitest::Test
     refute_nil ::Minitest::Suite::VERSION
   end
 
-  def test_it_does_something_useful
-    assert false
+  def test_that_registration_requires_a_symbol_name
+    # does not raise
+    Minitest::Suite.register(suite_name: :foobar, test_class: Class.new(Minitest::Test))
+
+    # does raise
+    assert_raises(Minitest::Suite::Error) {
+      Minitest::Suite.register(suite_name: "foobar", test_class: Class.new(Minitest::Test))
+    }
+  end
+
+  def test_that_registration_requires_a_minitest
+    # does not raise
+    Minitest::Suite.register(suite_name: :foobar, test_class: Class.new(Minitest::Test))
+
+    # does raise
+    assert_raises(Minitest::Suite::Error) {
+      Minitest::Suite.register(suite_name: :foobar, test_class: Class.new)
+    }
   end
 end
