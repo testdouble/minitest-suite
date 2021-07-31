@@ -26,8 +26,8 @@ require "minitest/suite"
 
 ### Declaring suites
 
-To associate a test class, just pass a suite name to `suite` in the body of each
-test class:
+Just pass a suite name to `suite` in the class body of each
+test to group that test with others of the same named suite:
 
 ```ruby
 class SweetTest < Minitest::Test
