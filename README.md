@@ -5,8 +5,8 @@ The minitest-suite gem modifies the way
 `Minitest::Test` subclasses are run by allowing you to organize them into
 sub-suites or groups.
 
-This can be handy when you want to (usually for performance reasons) want to run
-one logical grouping of tests at a time before moving onto the next.
+This can be handy when you want to (usually for performance reasons) run
+one logical grouping of tests at a time before moving onto the next group.
 
 ## Using minitest-suite
 
