@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    minitest-suite (0.1.0)
+    minitest-suite (0.0.1)
       minitest
 
 GEM

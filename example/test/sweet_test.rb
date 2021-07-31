@@ -1,5 +1,3 @@
-require "pp"
-
 CLASS_COUNT = 10
 TEST_COUNT = 10
 
@@ -17,7 +15,10 @@ at_exit do
     raise "Expected each suite to be run contiguously, but was not. Actual suite execution order was: #{suite_order}"
   end
 
-  pp executions
+  puts "Run order:"
+  executions.each.with_index do |execution, i|
+    puts "#{i + 1}. #{execution[:suite]}: #{execution[:class]}##{execution[:method]}"
+  end
 end
 
 require "minitest/suite"
@@ -36,7 +37,7 @@ CLASS_COUNT.times do |i|
       suite_name = :sixseven
       Minitest::Suite.register(suite_name: :sixseveneight, test_class: self)
     else
-      suite_name = :unnnamed
+      suite_name = :unsuitened
     end
 
     TEST_COUNT.times do |j|
@@ -50,4 +51,24 @@ CLASS_COUNT.times do |i|
       end
     end
   })
+end
+
+class Pumpkin < Minitest::Test
+  suite :veggie
+  def test_it() = puts("🎃")
+end
+
+class Pear < Minitest::Test
+  suite :fruit
+  def test_it() = puts("🍐")
+end
+
+class Pepper < Minitest::Test
+  suite :veggie
+  def test_it() = puts("🌶")
+end
+
+class Apple < Minitest::Test
+  suite :fruit
+  def test_it() = puts("🍎")
 end
