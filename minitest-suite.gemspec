@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Justin Searls"]
   spec.email = ["searls@gmail.com"]
 
-  spec.summary = "Splits your minitest suite into logical sub-suites/groups"
+  spec.summary = "Re-order your Minitest suite into logical sub-suites/groups"
   spec.homepage = "https://github.com/testdouble/minitest-suite"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
 
