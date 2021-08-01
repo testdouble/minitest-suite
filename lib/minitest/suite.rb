@@ -4,32 +4,36 @@ require_relative "suite/version"
 module Minitest
   module Suite
     class Error < StandardError; end
+    Registration = Struct.new(:suite, :test, keyword_init: true)
 
     def self.register(suite_name:, test_class:)
-      raise Error.new("suite_name must be a Symbol") unless suite_name.is_a?(Symbol)
-      raise Error.new("test_class must be a Minitest::Test") unless test_class.ancestors.include?(Minitest::Test)
-      if (conflicting_suite_name = (suites.keys - [suite_name]).find { |suite_name| suites[suite_name].include?(test_class) })
-        raise Error.new("#{test_class.name || "Class"} is already registered to the #{conflicting_suite_name.inspect} suite")
+      if !suite_name.is_a?(Symbol)
+        raise Error.new("suite_name must be a Symbol")
+      elsif !test_class.ancestors.include?(Minitest::Test)
+        raise Error.new("test_class must be a Minitest::Test")
+      elsif (conflict = registrations.find { |r| r.test == test_class && r.suite != suite_name })
+        raise Error.new("#{conflict.test.name || "Class"} is already registered to the #{conflict.suite.inspect} suite")
+      elsif registrations.none? { |r| r.test == test_class && r.suite == suite_name }
+        registrations << Registration.new(suite: suite_name, test: test_class)
       end
-      suites[suite_name] = (suites[suite_name] + [test_class]).uniq
     end
 
-    def self.suites
+    def self.registrations
       Thread.current[:minitest_suites] || reset
     end
 
     def self.reset
-      Thread.current[:minitest_suites] = Hash.new { [] }
+      Thread.current[:minitest_suites] = []
     end
 
     class PartialArrayProxy < Array
       def shuffle
-        suites = (Suite.suites.keys + [:unsuitened]).shuffle
+        suites = (Suite.registrations.map(&:suite).uniq + [:unsuitened]).shuffle
         suites.flat_map { |suite|
           if suite == :unsuitened
-            (self - Suite.suites.values.flatten).shuffle
+            (self - Suite.registrations.map(&:test)).shuffle
           else
-            Suite.suites[suite].shuffle
+            Suite.registrations.select { |r| r.suite == suite }.map(&:test).shuffle
           end
         }
       end
