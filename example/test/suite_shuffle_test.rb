@@ -52,23 +52,3 @@ CLASS_COUNT.times do |i|
     end
   })
 end
-
-class Pumpkin < Minitest::Test
-  suite :veggie
-  def test_it() = puts("🎃")
-end
-
-class Pear < Minitest::Test
-  suite :fruit
-  def test_it() = puts("🍐")
-end
-
-class Pepper < Minitest::Test
-  suite :veggie
-  def test_it() = puts("🌶")
-end
-
-class Apple < Minitest::Test
-  suite :fruit
-  def test_it() = puts("🍎")
-end

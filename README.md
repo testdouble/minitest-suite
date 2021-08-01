@@ -47,9 +47,9 @@ of those suites will be shuffled.
 For example, suppose you have 4 test classes, two fruits and two vegetables:
 
 ```ruby
-class Pumpkin < Minitest::Test
+class Broccoli < Minitest::Test
   suite :veggie
-  def test_it() = puts("🎃")
+  def test_it() = puts("🥦")
 end
 
 class Pear < Minitest::Test
@@ -77,13 +77,13 @@ the order will still be randomized):
 
 🍐
 .🍎
-.🎃
+.🥦
 .🌶
 .
 ```
 
 To wit, the above strategy will ensure you'd never see this test order:
-🍐,🌶,🍎,🎃.
+🍐,🌶,🍎,🥦.
 
 Looking for more? Check out this repo's [example
 test](/example/test/sweet_test.rb).
