@@ -57,4 +57,13 @@ class Minitest::SuiteTest < Minitest::Test
 
     assert_equal [a, b], Minitest::Suite.registrations.select { |r| r.suite == :foobar }.map(&:test)
   end
+
+  def test_order_is_symbols
+    Minitest::Suite.order = [:a, :b]
+    e = assert_raises(Minitest::Suite::Error) {
+      Minitest::Suite.order = ["alpha"]
+    }
+    assert_equal "Minitest::Suite.order must be an array of Symbol suite names", e.message
+    assert_raises(Minitest::Suite::Error) { Minitest::Suite.order = "beta" }
+  end
 end

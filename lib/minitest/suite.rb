@@ -18,6 +18,19 @@ module Minitest
       end
     end
 
+    def self.order=(suite_order)
+      if !suite_order.is_a?(Array) ||
+          suite_order.any? { |suite| !suite.is_a?(Symbol) }
+        raise Error.new("Minitest::Suite.order must be an array of Symbol suite names")
+      else
+        @@suite_order = suite_order.uniq
+      end
+    end
+
+    def self.order
+      @@suite_order ||= []
+    end
+
     def self.registrations
       @@registrations ||= reset
     end
@@ -45,7 +58,7 @@ module Minitest
     class PartialArrayProxy < Array
       def shuffle
         filtered = Suite.registrations.select { |r| include?(r.test) }
-        suites = (filtered.map(&:suite).uniq + [:__unsuitened]).shuffle
+        suites = Suite.order | (filtered.map(&:suite).uniq + [:__unsuitened]).shuffle
         suites.flat_map { |suite|
           if suite == :__unsuitened
             (self - filtered.map(&:test)).shuffle

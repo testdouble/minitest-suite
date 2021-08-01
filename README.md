@@ -94,6 +94,29 @@ Since you're going to the trouble of organizing your tests into logical suites,
 you may as well have a little additional control over which suites run and in
 what order. Below are a few handy things you can do once you're set up.
 
+#### Fix the ordering that suites run in
+
+A very sensible strategy is to optimize the speed of your feedback loop by run
+your fastest tests first so your tests can fail fast.
+
+As a typical example, suppose you want to run your pure Ruby unit tests, then
+your Rails model tests, then your other (presumably slower) integration tests.
+Near the top of your test helper, before your tests have started running, set
+the order like this:
+
+```ruby
+Minitest::Suite.order = [:unit, :model]
+```
+
+With this set, any test classes that call `suite :unit` will be shuffled and run
+first, then any tests with `suite :model`, and then the rest of your suites and
+tests.
+
+(Fail-fast behavior is available for Minitest via the [minitest-fail-fast
+gem](https://github.com/teoljungberg/minitest-fail-fast) or the [Rails test
+runner](https://guides.rubyonrails.org/testing.html#the-rails-test-runner)'s
+`-f` flag.)
+
 #### Filter to run only certain test suites
 
 If you want to run only tests belonging to a certain suite or set of suites,
