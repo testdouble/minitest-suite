@@ -1,5 +1,5 @@
-require_relative "suite/version"
 require "minitest"
+require_relative "suite/version"
 
 module Minitest
   module Suite
