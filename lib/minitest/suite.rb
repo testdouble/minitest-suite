@@ -19,11 +19,11 @@ module Minitest
     end
 
     def self.registrations
-      Thread.current[:minitest_suites] || reset
+      @@registrations ||= reset
     end
 
     def self.reset
-      Thread.current[:minitest_suites] = []
+      @@registrations = []
     end
 
     def self.filter_runnables(runnables)
