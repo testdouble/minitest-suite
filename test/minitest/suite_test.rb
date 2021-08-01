@@ -55,6 +55,6 @@ class Minitest::SuiteTest < Minitest::Test
     Minitest::Suite.register(suite_name: :foobar, test_class: b)
     Minitest::Suite.register(suite_name: :foobar, test_class: b)
 
-    assert_equal [a, b], Minitest::Suite.suites[:foobar]
+    assert_equal [a, b], Minitest::Suite.registrations.select { |r| r.suite == :foobar }.map(&:test)
   end
 end

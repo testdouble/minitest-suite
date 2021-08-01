@@ -3,5 +3,17 @@
 set -ex
 
 bundle exec rake
+
 cd example
-bundle exec rake
+
+bundle exec ruby test/suite_shuffle_test.rb
+
+bundle exec ruby test/suite_filter_test.rb
+MINITEST_SUITE_ONLY="suite1" bundle exec ruby test/suite_filter_test.rb
+MINITEST_SUITE_ONLY="suite1, suite2" bundle exec ruby test/suite_filter_test.rb
+MINITEST_SUITE_ONLY="suite1,suite2,suite3" bundle exec ruby test/suite_filter_test.rb
+MINITEST_SUITE_ONLY="nonsense" bundle exec ruby test/suite_filter_test.rb
+MINITEST_SUITE_EXCEPT="suite1" bundle exec ruby test/suite_filter_test.rb
+MINITEST_SUITE_EXCEPT="suite1,suite3" bundle exec ruby test/suite_filter_test.rb
+MINITEST_SUITE_EXCEPT="suite1,suite2,suite3" bundle exec ruby test/suite_filter_test.rb
+MINITEST_SUITE_EXCEPT="nonsense" bundle exec ruby test/suite_filter_test.rb

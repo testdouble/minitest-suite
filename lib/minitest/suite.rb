@@ -26,14 +26,31 @@ module Minitest
       Thread.current[:minitest_suites] = []
     end
 
+    def self.filter_runnables(runnables)
+      if (only = ENV["MINITEST_SUITE_ONLY"])
+        suites = only.gsub(/\s+/, "").split(",").map(&:to_sym)
+        selected_tests = registrations.select { |r| suites.include?(r.suite) }
+          .map(&:test)
+        runnables.select { |r| selected_tests.include?(r) }
+      elsif (except = ENV["MINITEST_SUITE_EXCEPT"])
+        suites = except.gsub(/\s+/, "").split(",").map(&:to_sym)
+        excepted_tests = registrations.select { |r| suites.include?(r.suite) }
+          .map(&:test)
+        runnables.reject { |r| excepted_tests.include?(r) }
+      else
+        runnables
+      end
+    end
+
     class PartialArrayProxy < Array
       def shuffle
-        suites = (Suite.registrations.map(&:suite).uniq + [:unsuitened]).shuffle
+        filtered = Suite.registrations.select { |r| include?(r.test) }
+        suites = (filtered.map(&:suite).uniq + [:__unsuitened]).shuffle
         suites.flat_map { |suite|
-          if suite == :unsuitened
-            (self - Suite.registrations.map(&:test)).shuffle
+          if suite == :__unsuitened
+            (self - filtered.map(&:test)).shuffle
           else
-            Suite.registrations.select { |r| r.suite == suite }.map(&:test).shuffle
+            filtered.select { |r| r.suite == suite }.map(&:test).shuffle
           end
         }
       end
@@ -56,8 +73,13 @@ module Minitest
     class << self
       undef_method :runnables
       define_method :runnables do
-        return @@runnables if @@runnables.is_a?(Minitest::Suite::PartialArrayProxy)
-        @@runnables = Minitest::Suite::PartialArrayProxy.new(@@runnables)
+        filtered = Minitest::Suite.filter_runnables(@@runnables)
+        if @@runnables.is_a?(Minitest::Suite::PartialArrayProxy) &&
+            filtered == @runnables
+          @@runnables
+        else
+          @@runnables = Minitest::Suite::PartialArrayProxy.new(filtered)
+        end
       end
     end
   end

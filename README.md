@@ -88,6 +88,37 @@ To wit, the above strategy will ensure you'd never see this test order:
 Looking for more? Check out this repo's [example
 test](/example/test/sweet_test.rb).
 
+### Configuration
+
+Since you're going to the trouble of organizing your tests into logical suites,
+you may as well have a little additional control over which suites run and in
+what order. Below are a few handy things you can do once you're set up.
+
+#### Filter to run only certain test suites
+
+If you want to run only tests belonging to a certain suite or set of suites,
+just set the environment variable `MINITEST_SUITE_ONLY` to a comma-delimited
+string of suite names to run:
+
+```
+$ MINITEST_SUITE_ONLY="unit,model" bin/rake test
+```
+
+When using this option, note that test classes that _don't_ call `suite` **will
+not be run**.
+
+#### Run all tests except certain suites
+
+If there's a suite of tests you don't want to run, set the environment variable
+`MINITEST_SUITE_EXCEPT` to a comma-delimited string of suite names to skip:
+
+```
+$ MINITEST_SUITE_EXCEPT="integration,browser" bin/rake test
+```
+
+When using this option, note that test classes that _don't_ call `suite` **will
+be run**.
+
 ## Code of Conduct
 
 This project follows Test Double's [code of

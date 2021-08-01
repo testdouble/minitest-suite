@@ -15,10 +15,10 @@ at_exit do
     raise "Expected each suite to be run contiguously, but was not. Actual suite execution order was: #{suite_order}"
   end
 
-  puts "Run order:"
-  executions.each.with_index do |execution, i|
-    puts "#{i + 1}. #{execution[:suite]}: #{execution[:class]}##{execution[:method]}"
-  end
+  # puts "Run order:"
+  # executions.each.with_index do |execution, i|
+  #   puts "#{i + 2}. #{execution[:suite]}: #{execution[:class]}##{execution[:method]}"
+  # end
 end
 
 require "minitest/suite"
