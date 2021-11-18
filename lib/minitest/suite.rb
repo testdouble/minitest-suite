@@ -55,10 +55,23 @@ module Minitest
       end
     end
 
+    def self.registration_for(test_class)
+      first_registered_ancestor = test_class.ancestors.find { |ancestor|
+        registrations.any? { |r| r.test == ancestor }
+      }
+      if first_registered_ancestor
+        Registration.new(
+          test: test_class,
+          suite: registrations.find { |r| r.test == first_registered_ancestor }.suite
+        )
+      end
+    end
+
     class PartialArrayProxy < Array
       def shuffle
-        filtered = Suite.registrations.select { |r| include?(r.test) }
+        filtered = map { |test_class| Suite.registration_for(test_class) }.compact
         suites = Suite.order | (filtered.map(&:suite).uniq + [:__unsuitened]).shuffle
+
         suites.flat_map { |suite|
           if suite == :__unsuitened
             (self - filtered.map(&:test)).shuffle

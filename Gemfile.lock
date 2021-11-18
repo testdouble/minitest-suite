@@ -38,6 +38,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  arm64-darwin-21
 
 DEPENDENCIES
   minitest-suite!
@@ -45,4 +46,4 @@ DEPENDENCIES
   standard
 
 BUNDLED WITH
-   2.2.15
+   2.2.30

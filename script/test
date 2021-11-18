@@ -23,3 +23,5 @@ ORDER="suite1" bundle exec ruby test/suite_fixed_order_test.rb
 ORDER="suite2,suite3" bundle exec ruby test/suite_fixed_order_test.rb
 ORDER="suite3,suite2,suite1" bundle exec ruby test/suite_fixed_order_test.rb
 
+bundle exec ruby test/inherited_type_test.rb
+
